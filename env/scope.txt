@@ -1,0 +1,56 @@
+----------------------------------MVP Scope----------------------------------
+Start by making it work through command line
+DB set up
+Person - relates to the human using the service
+
+1. When first open need to check if person is logged in (is there a user in users table)
+    If there isn't then need to request person to create an account
+        Request to create username - can't already exist in DB users table
+        Request to create password - enter twice to ensure they match - must be X len
+    If there is one or more users in the users table - person needs to log in - request username and password
+        If password is incorect give a second chance
+        If second chance password is incorect quit application
+        When correct move onto 2.
+    
+2. Once logged in present options list and ask person for input to which option they want to select
+    a. Option to get a password 
+        get password on app name
+            return password and copy to clip board
+        get password on app URL
+            return password and copy to clip board
+    b. Option to generate a new password
+        ask for app name
+            if it already exists ask if person wants to update the current password
+                auto generate new password and update passwords row and print to user
+            if it doesn't exist save as variable
+                check if person wants to add an app URL
+                    if yes
+                        request for app URL then save to variable
+                    if no skip
+                    check if there are any requirements for the password
+                        length
+                        letters
+                        numbers
+                        special characthers
+                    generate password based on requirements
+                    save password and info to passwords table, auto generate remaining information required
+                    print app name and password to user
+    c. View all passwords
+        return a list of all the persons passwords to them
+        order by created date
+        display one row per line in print out
+        print app name, password, created date
+ 
+
+----------------------------------Future Scope----------------------------------
+- Hashing of passwords before storing
+- Before deleting password need to re-enter user password
+- Before viewing all passwords need to re-enter user password
+- Stop SQL injection attacks - figure out how to test an SQL injection attack
+- Saving to GitHub for others to use and develop upon
+- Store the user details so the same computer can stay logged in when restaarting the application 
+- Check age of passwords and advise they are changed every x time period
+- Graphical Interface - python based extension
+- Develop into proper application - can be downloaded and installed etc...
+- Store database in the cloud so passwords can be accessed from any device
+- Browser plug in to auto offer when accessing website
