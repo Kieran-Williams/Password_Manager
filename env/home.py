@@ -1,7 +1,22 @@
-from Database import db_calls
+from Database import create_db, db_calls
 import inital_user_check
 from text_formatting import remove_spaces
-from Screens import welcome_screen, create_new_password, retrieve_a_password, update_a_password, delete_a_password, view_all_passwords
+from Screens import *
+from pathlib import Path
+
+db = Path(str(Path().absolute()) + '/Database/password_manager.db')
+if db.exists():
+    pass
+else:
+    response = create_db.create_db()
+    if response == 0:
+        print('Can not install app, please restart')
+        exit()
+    elif response == 1:
+        pass
+    else:
+        print('Error')
+        exit()
 
 x = db_calls.check_if_users_empty()
 

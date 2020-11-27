@@ -8,7 +8,6 @@ def create_connection(db_file):
         return conn
     except Error as e:
         print(e)
-
     return conn
 
 
@@ -21,7 +20,7 @@ def create_table(conn, create_table_sql):
 
 
 def main():
-    database = r"password_manager.db"
+    database = r'Database/password_manager.db'
 
     users_table = """CREATE TABLE IF NOT EXISTS users (
                         id integer PRIMARY KEY,
@@ -51,5 +50,3 @@ def main():
         create_table(conn, passwords_table)
     else:
         print("Error! cannot create the database connection.")
-
-main()
