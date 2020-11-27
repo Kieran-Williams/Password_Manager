@@ -2,6 +2,13 @@ A Password Manager Application
 
 Built in Python - Currently can only be used through command line
 
+How To Use
+
+Download and launch the application through a command line tool. On launch the application looks for the DB
+if one isn't found it creates one and loads the tables within the application folders.
+
+To selection options presented enter the number assoicated with the option you want to choose.
+
 Future Scope:
 
 - Hashing of passwords before storing
