@@ -1,1 +1,6 @@
 /.vscode
+/scope.txt
+/env/__pycache__
+/env/Database/__pycache__
+/env/Screens/__pycache__
+/env/Database/password_manager.db
