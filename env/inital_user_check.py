@@ -1,5 +1,6 @@
-from Database.db_calls import check_if_username_exists, create_new_user, db_login
+from Database.db_calls import check_if_username_exists, create_new_user, db_login, hash_login
 from text_formatting import remove_spaces
+import hashing
 
 
 def no_user_exists():
@@ -33,25 +34,25 @@ def create_user():
             password = input("You didn't enter a password please try again:")
         else:
             break
-    response = create_new_user(username, password)
+    hash_password = hashing.get_hashed_password(password)
+    response = create_new_user(username, hash_password)
     return(response, username, password)
 
 
-def login(username, password):
-    login_attempt = db_login(username, password)
+def login(username, plain_text_password):
+    hashed_password = hash_login(username)
     while True:
-        if login_attempt == 0:
-            return (0, username, password)
-            break
-        elif login_attempt == 1:
+        if hashed_password == 0:
             print("That username doesn't exist")
             username = input('What is your username:')
-            password = input('What is your password:')
-            login_attempt = db_login(username, password)
-        elif login_attempt == 2:
-            print("That password is incorrect")
-            password = input('What is your password:')
-            login_attempt = db_login(username, password)
+            plain_text_password = input('What is your password:')
+            hashed_password = hash_login(username)
         else:
-            return 1
-            break
+            login_attempt = hashing.check_password(plain_text_password, hashed_password)
+            if login_attempt == True:
+                return (0, username, plain_text_password)
+                break
+            else:
+                print("That password is incorrect")
+                plain_text_password = input('What is your password:')
+                login_attempt = hashing.check_password(plain_text_password, hashed_password)

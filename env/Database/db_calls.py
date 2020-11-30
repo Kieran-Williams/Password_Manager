@@ -73,6 +73,19 @@ def create_new_password(user_id, password, app_name, app_url):
         return("Password created successfully", app_name, app_url, password)
 
 
+def hash_login(username):
+    # create a database connection
+    conn = create_connection(database)
+
+    cur = conn.cursor()
+    cur.execute("SELECT password FROM users WHERE username = ?", (username, ))
+    data = cur.fetchone()
+    if data is None:
+        return 0
+    else:
+        return(data[0])
+
+
 def db_login(username, password):
     # create a database connection
     conn = create_connection(database)
@@ -89,6 +102,7 @@ def db_login(username, password):
             return 2
     else:
         return 0
+
 
 def get_user_id(username):
     # create a database connection

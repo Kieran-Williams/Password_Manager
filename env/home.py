@@ -1,7 +1,7 @@
 from Database import create_db, db_calls
 import inital_user_check
 from text_formatting import remove_spaces
-from Screens import *
+from Screens import welcome_screen, create_new_password, delete_a_password, retrieve_a_password, update_a_password, view_all_passwords
 from pathlib import Path
 
 db = Path(str(Path().absolute()) + '/Database/password_manager.db')
