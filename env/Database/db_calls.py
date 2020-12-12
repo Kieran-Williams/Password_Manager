@@ -1,6 +1,7 @@
 import sqlite3
 import datetime
 from sqlite3 import Error
+import hashing
 
 database = r"Database/password_manager.db"
 
@@ -43,9 +44,11 @@ def check_if_username_exists(username):
 def create_new_user(username, password):
     # create a database connection
     conn = create_connection(database)
-    user = (username, password)
-    sql = ''' INSERT INTO users(username,password)
-              VALUES(?,?) '''
+    user_id = hashing.generate_random_user_id()
+    salt = hashing.generate_salt()
+    user = (user_id, username, password, salt)
+    sql = ''' INSERT INTO users(id, username, password, salt)
+              VALUES(?,?,?,?) '''
     cur = conn.cursor()
     cur.execute(sql, user)
     conn.commit()
@@ -56,11 +59,11 @@ def create_new_user(username, password):
         return("User created successfully")
 
 
-def create_new_password(user_id, password, app_name, app_url):
+def create_new_password(user_id, encrypted_password, plain_text_password, app_name, app_url):
     # create a database connection
     conn = create_connection(database)
     created_date = datetime.date.today().strftime('%Y-%m-%d')
-    insert = (user_id, password, app_name, app_url, created_date)
+    insert = (user_id, encrypted_password, app_name, app_url, created_date)
     sql = ''' INSERT INTO passwords(user_id, password, app_name, app_url, created_date)
               VALUES(?,?,?,?,?) '''
     cur = conn.cursor()
@@ -70,7 +73,7 @@ def create_new_password(user_id, password, app_name, app_url):
     if created == 0:
         return("An error has occured")
     else:
-        return("Password created successfully", app_name, app_url, password)
+        return("Password created successfully", app_name, app_url, plain_text_password)
 
 
 def hash_login(username):
@@ -79,6 +82,19 @@ def hash_login(username):
 
     cur = conn.cursor()
     cur.execute("SELECT password FROM users WHERE username = ?", (username, ))
+    data = cur.fetchone()
+    if data is None:
+        return 0
+    else:
+        return(data[0])
+
+
+def hash_login_id(user_id):
+    # create a database connection
+    conn = create_connection(database)
+
+    cur = conn.cursor()
+    cur.execute("SELECT password FROM users WHERE id = ?", (user_id, ))
     data = cur.fetchone()
     if data is None:
         return 0
@@ -140,11 +156,11 @@ def get_password_app_url(app_url, user_id):
         return(data)[0]
 
 
-def update_password_app_name(user_id, password, app_name):
+def update_password_app_name(user_id, encrypted_password, app_name):
     # create a database connection
     conn = create_connection(database)
     created_date = datetime.date.today().strftime('%Y-%m-%d')
-    insert = (password, created_date, user_id, app_name)
+    insert = (encrypted_password, created_date, user_id, app_name)
     sql = ''' UPDATE passwords SET password = ?, created_date = ?
               WHERE user_id = ? AND app_name = ?;'''
     cur = conn.cursor()
@@ -157,11 +173,11 @@ def update_password_app_name(user_id, password, app_name):
         return(1)
 
 
-def update_password_app_url(user_id, password, app_url):
+def update_password_app_url(user_id, encrypted_password, app_url):
     # create a database connection
     conn = create_connection(database)
     created_date = datetime.date.today().strftime('%Y-%m-%d')
-    insert = (password, created_date, user_id, app_url)
+    insert = (encrypted_password, created_date, user_id, app_url)
     sql = ''' UPDATE passwords SET password = ?, created_date = ?
               WHERE user_id = ? AND app_url = ?;'''
     cur = conn.cursor()
@@ -215,3 +231,17 @@ def get_all_passwords(user_id):
         return(0)
     else:
         return(data)
+
+
+def get_user_salt(user_id):
+    # create a database connection
+    conn = create_connection(database)
+
+    cur = conn.cursor()
+    cur.execute("SELECT salt FROM users WHERE id = ?", (user_id, ))
+    data = cur.fetchone()
+    if data is None:
+        return(0)
+    else:
+        return(data)
+

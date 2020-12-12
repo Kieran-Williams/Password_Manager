@@ -25,13 +25,14 @@ def main():
     users_table = """CREATE TABLE IF NOT EXISTS users (
                         id integer PRIMARY KEY,
                         username text NOT NULL,
-                        password text NOT NULL
+                        password BLOB NOT NULL,
+                        salt BLOB NOT NULL
                     ); """
 
     passwords_table = """CREATE TABLE IF NOT EXISTS passwords (
                             id integer PRIMARY KEY,
                             user_id integer NOT NULL,
-                            password text NOT NULL,
+                            password BLOB NOT NULL,
                             app_name text NOT NULL,
                             app_url text,
                             created_date text NOT NULL,

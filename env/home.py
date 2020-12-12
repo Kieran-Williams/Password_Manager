@@ -23,19 +23,19 @@ x = db_calls.check_if_users_empty()
 if x == 0:
     response = (inital_user_check.no_user_exists())
     username = response[1]
-    password = response[2]
-    print(response[0], '\n''Username is: ' + username, '\n''Password is: ' + password)
+    user_password = response[2]
+    print(response[0], '\n''Username is: ' + username, '\n''Password is: ' + user_password)
 else:
     login_or_creatuser = input('1.Login \n2.Create New User \nWhat do you want to do:') 
     while True:
         login_or_creatuser = remove_spaces(login_or_creatuser)
         if login_or_creatuser.casefold() in ('1', 'login'):
             username = input('What is your username:')
-            password = input('What is your password:')
-            response = inital_user_check.login(username, password)
+            user_password = input('What is your password:')
+            response = inital_user_check.login(username, user_password)
             if response[0] == 0:
                 username = response[1]
-                password = response[2]
+                user_password = response[2]
                 break
             elif response == 1:
                 print('Error')
@@ -43,8 +43,8 @@ else:
         elif login_or_creatuser.casefold() in ('2', 'createnewuser'):
             response = inital_user_check.create_user()
             username = response[1]
-            password = response[2]
-            print(response[0], '\n''Username is: ' + username, '\n''Password is: ' + password)
+            user_password = response[2]
+            print(response[0], '\n''Username is: ' + username, '\n''Password is: ' + user_password)
             break
         else:
             login_or_creatuser = input("Sorry I didn't reconginse that please select one of the optoins:")
@@ -54,7 +54,7 @@ choice = welcome_screen.welcome(username)
 while True:
     if choice == '1':
         #Retrieve a password
-        response = retrieve_a_password.retrieve_password(user_id)
+        response = retrieve_a_password.retrieve_password(user_id, user_password)
         if response == 0:
             choice = '2'
         else:
@@ -62,11 +62,11 @@ while True:
             choice = welcome_screen.welcome(username)
     elif choice == '2':
         #Create a new password
-        print(create_new_password.create_new_password(user_id))
+        print(create_new_password.create_new_password(user_id, user_password))
         choice = welcome_screen.welcome(username)
     elif choice == '3':
         #Update a password
-        response = update_a_password.update_password(user_id)
+        response = update_a_password.update_password(user_id, user_password)
         if response == 0:
             choice = '2'
         else:
@@ -82,7 +82,7 @@ while True:
             choice = welcome_screen.welcome(username)
     elif choice == '5':
         #View all passwords
-        response = view_all_passwords.all_passwords(user_id)
+        response = view_all_passwords.all_passwords(user_id, user_password)
         if response == 0:
             choice = welcome_screen.welcome(username)
         else:
@@ -95,3 +95,4 @@ while True:
         exit()
     else:
         print('Error')
+        break

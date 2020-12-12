@@ -1,8 +1,9 @@
 from text_formatting import remove_spaces
 from Database.db_calls import get_password_app_name, get_password_app_url, update_password_app_name, update_password_app_url
 from password_generator import generate
+from hashing import encrypt_password
 
-def update_password(user_id):
+def update_password(user_id, user_password):
     app = input('1.App Name \n2.App URL \nHow do you want to update the password:')
     while True:
         app = remove_spaces(app)
@@ -24,12 +25,13 @@ def update_password(user_id):
                 else:
                     try_again = input("I didn't understand that please select one of the options:")
             else:
-                password = generate()
-                response = update_password_app_name(user_id, password, app_name)
+                plain_text_password = generate()
+                encrypted_password = encrypt_password(user_password, plain_text_password, user_id)
+                response = update_password_app_name(user_id, encrypted_password, app_name)
                 if response == 0:
                     return ('Could not update password')
                 elif response == 1:
-                    return ('Success', app_name, password)
+                    return ('Success', app_name, plain_text_password)
                 else:
                     return('Error')
 
@@ -52,12 +54,13 @@ def update_password(user_id):
                 else:
                     try_again = input("I didn't understand that please select one of the options:")
             else:
-                password = generate()
-                response = update_password_app_url(user_id, password, app_url)
+                plain_text_password = generate()
+                encrypted_password = encrypt_password(user_password, plain_text_password, user_id)
+                response = update_password_app_url(user_id, encrypted_password, app_url)
                 if response == 0:
                     return ('Could not update password')
                 elif response == 1:
-                    return ('Success', app_url, password)
+                    return ('Success', app_url, plain_text_password)
                 else:
                     return('Error')
         else:

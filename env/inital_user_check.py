@@ -5,12 +5,12 @@ import hashing
 
 def no_user_exists():
     print('You need to set up an account to use the Password Manager')
-    i = input('Would you like to set up an account, Yes or No?')
+    i = input('1.Yes \n2.No \nWould you like to set up an account:')
     i = remove_spaces(i)
     while True:
-        if i.casefold() == 'yes':
+        if i.casefold() in ('1','yes'):
             return(create_user())
-        elif i.casefold() == 'no':
+        elif i.casefold() in ('2','no'):
             print('Okay, exiting Password Manager')
             exit()
         else:

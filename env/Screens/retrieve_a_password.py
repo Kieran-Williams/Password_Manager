@@ -1,7 +1,8 @@
 from text_formatting import remove_spaces
 from Database.db_calls import get_password_app_name, get_password_app_url
+from hashing import decrypt_password
 
-def retrieve_password(user_id):
+def retrieve_password(user_id, user_password):
     app = input('1.App Name \n2.App URL \nHow do you want to retrieve the password:')
     while True:
         app = remove_spaces(app)
@@ -23,7 +24,8 @@ def retrieve_password(user_id):
                 else:
                     try_again = input("I didn't understand that please select one of the options:")
             else:
-                return(response)
+                password = decrypt_password(user_password, response, user_id)
+                return(password)
         elif app.casefold() in ('2', 'appurl'):
             app_url = input('What is the URl of the app:')
             while True:
@@ -43,6 +45,7 @@ def retrieve_password(user_id):
                 else:
                     try_again = input("I didn't understand that please select one of the options:")
             else:
-                return(response)
+                password = decrypt_password(user_password, response, user_id)
+                return(password)
         else:
             app = input("Sorry I didn't reconginse that please select one of the optoins:")
