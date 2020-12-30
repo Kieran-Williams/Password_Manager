@@ -245,3 +245,16 @@ def get_user_salt(user_id):
     else:
         return(data)
 
+
+def check_if_appname_exists(appname):
+    # create a database connection
+    conn = create_connection(database)
+
+    cur = conn.cursor()
+    cur.execute("SELECT id FROM passwords WHERE app_name = ?", (appname, ))
+    data = cur.fetchone()
+    if data is None:
+        return 0
+    else:
+        return 1
+

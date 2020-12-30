@@ -11,7 +11,6 @@ To selection options presented enter the number assoicated with the option you w
 
 Future Scope:
 
-- Not have two of the same application name/URL and ensure name isn't blank
 - Before deleting password need to re-enter user password
 - Before viewing all passwords need to re-enter user password
 - Check age of passwords and advise they are changed every x time period
